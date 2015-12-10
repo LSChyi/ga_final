@@ -12,7 +12,6 @@ public:
 
 private:
     bool should_terminate();
-    Chromosome generate_chromosome();
     void update_generator();
 
     double *generator_model;

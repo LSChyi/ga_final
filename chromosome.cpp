@@ -4,6 +4,7 @@
 using namespace std;
 
 Chromosome::Chromosome(int ell) {
+    cout << ell << endl;
     genes = new int[ell];
     size = ell;
 }
@@ -20,9 +21,9 @@ void Chromosome::init(int values[]) {
 }
 
 void Chromosome::output() {
-    cout << "[";
+    cout << "[ ";
     for(int i = 0; i < size; ++i) {
         cout << genes[i] << " ";
     }
-    cout << " ]" << endl;
+    cout << "]" << endl;
 }
