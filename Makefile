@@ -1,8 +1,11 @@
-all: youbike_op
-	g++ -o bin/youbike_op bin/*.o
+all: youbikeOp
+	g++ -o bin/youbike_op *.o
 
-youbike_op: main.cpp
-	g++ -c main.cpp -o bin/youbike_op.o
+youbikeOp: main.cpp youbikeGa.o
+	g++ -c main.cpp
+
+youbikeGa.o: youbikeGa.h youbikeGa.cpp
+	g++ -c youbikeGa.h youbikeGa.cpp 
 
 clean:
-	rm -f bin/*.o
+	rm -f bin/*.o *.o
