@@ -6,7 +6,7 @@ using namespace std;
 int main(int argc, char *argv[]) {
     if(argc != 6) {
         cout << "parameters number not match!" << endl;
-        cout << "youbike_op ell stationId repeat maxGen display" << endl;
+        cout << "youbikeOp ell stationId repeat maxGen display" << endl;
 
         return -1;
     }

@@ -1,4 +1,4 @@
-all: youbikeOp
+all: youbikeOp youbikeGa.o chromosome.o
 	g++ -o bin/youbike_op *.o
 
 youbikeOp: main.cpp youbikeGa.o
@@ -6,6 +6,9 @@ youbikeOp: main.cpp youbikeGa.o
 
 youbikeGa.o: youbikeGa.h youbikeGa.cpp
 	g++ -c youbikeGa.h youbikeGa.cpp 
+
+chromosome.o:
+	g++ -c chromosome.h chromosome.cpp
 
 clean:
 	rm -f bin/*.o *.o
