@@ -4,7 +4,6 @@
 using namespace std;
 
 Chromosome::Chromosome(int ell) {
-    cout << ell << endl;
     genes = new int[ell];
     size = ell;
 }

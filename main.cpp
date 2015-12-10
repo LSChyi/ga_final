@@ -17,8 +17,6 @@ int main(int argc, char *argv[]) {
     int max_gen = atoi(argv[4]);
     bool display = (atoi(argv[5]) > 0) ? true : false ;
 
-    cout << "main:" << ell << endl;
-
     for(int i = 0; i < repeat; ++i) {
         YoubikeGa ga(ell, max_gen, station_id);
     }
