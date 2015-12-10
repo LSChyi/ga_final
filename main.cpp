@@ -19,6 +19,7 @@ int main(int argc, char *argv[]) {
 
     for(int i = 0; i < repeat; ++i) {
         YoubikeGa ga(ell, max_gen, station_id);
+        ga.run();
     }
 
     return 0;
