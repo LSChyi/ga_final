@@ -19,6 +19,7 @@ private:
     int ell;
     int station_id;
     int generation;
+    int park;
 };
 
 #endif
