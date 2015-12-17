@@ -14,7 +14,7 @@ private:
     bool should_terminate();
     void update_generator();
 
-    double *generator_model;
+    double **generator_model;  // 2-D MAP 
     int max_gen;
     int ell;
     int station_id;
