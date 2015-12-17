@@ -2,6 +2,7 @@
 #define YOUBIKEGA_H
 
 #include "chromosome.h"
+#include "fitnessFunction.h"
 
 class YoubikeGa {
 public:
