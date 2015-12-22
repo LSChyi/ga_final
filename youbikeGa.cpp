@@ -8,7 +8,7 @@ YoubikeGa::YoubikeGa(int n_ell, int n_max_gen, int n_station_id, int n_park) {
     for(int i = 0; i < n_ell; ++i) {
 		generator_model[i] = new double [n_park*2+1] ;  //  -n_park ~ 0 ~ +n_park
 		for(int i2 =0 ; i2 < n_park; i2++){
-            generator_model[i][i2] = 1.0/double(n_park*2+1);
+                   generator_model[i][i2] = 1.0/double(n_park*2+1);
 	    }
     }
     park = n_park ;
