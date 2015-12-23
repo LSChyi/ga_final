@@ -1,6 +1,7 @@
 #include <cstring>
 #include <iostream>
 #include "youbikeGa.h"
+#include "chromosome.h"
 using namespace std;
 
 YoubikeGa::YoubikeGa(int n_ell, int n_max_gen, int n_station_id, int n_park) {
@@ -8,7 +9,7 @@ YoubikeGa::YoubikeGa(int n_ell, int n_max_gen, int n_station_id, int n_park) {
     for(int i = 0; i < n_ell; ++i) {
 		generator_model[i] = new double [n_park*2+1] ;  //  -n_park ~ 0 ~ +n_park
 		for(int i2 =0 ; i2 < n_park; i2++){
-                   generator_model[i][i2] = 1.0/double(n_park*2+1);
+            generator_model[i][i2] = 1.0/double(n_park*2+1);
 	    }
     }
     park = n_park ;
@@ -49,7 +50,11 @@ bool YoubikeGa::should_terminate() {
 void YoubikeGa::run() {
     while(should_terminate()) {
         // 1. generate two chromosome
-        
+        Chromosome s_1(ell),s_2(ell);
+        int* sample_1;
+        int* sample_2;
+        sample_1=s_1.sample(generator_model,n_park);
+        sample_2=s_2.sample(generator_model,n_park);
         // 2. ask fitness function
         
         // 3. update model
