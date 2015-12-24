@@ -2,6 +2,7 @@
 #include <cstring>
 #include "chromosome.h"
 #include <time.h>
+#include <cstdlib>
 
 using namespace std;
 
@@ -29,7 +30,7 @@ void Chromosome::output() {
     cout << "]" << endl;
 }
 
-int* Chromosome::sample(**double p_vec,int n_park) {
+int* Chromosome::sample(double** p_vec,int n_park) {
 	for(int i = 0 ;i < size; i++){
 		srand (time(NULL));
 		double dise = (rand()%(2*n_park+1))/(2*n_park+1);

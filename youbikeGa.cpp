@@ -2,6 +2,7 @@
 #include <iostream>
 #include "youbikeGa.h"
 #include "chromosome.h"
+#include "fitnessFunction.h"
 using namespace std;
 
 YoubikeGa::YoubikeGa(int n_ell, int n_max_gen, int n_station_id, int n_park) {
@@ -53,13 +54,15 @@ void YoubikeGa::run() {
         Chromosome s_1(ell),s_2(ell);
         int* sample_1;
         int* sample_2;
-        sample_1=s_1.sample(generator_model,n_park);
-        sample_2=s_2.sample(generator_model,n_park);
+        sample_1=s_1.sample(generator_model,park);
+        sample_2=s_2.sample(generator_model,park);
         // 2. ask fitness function
-        
+		//FitnessFunction f;
+		//int fitness = f.calculate_fitness();
         // 3. update model
         
         // 4. generation += 1
-        generation += 1; 
+        generation += 1;
+		
     }
 }
