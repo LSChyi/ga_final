@@ -13,11 +13,13 @@ YoubikeGa::YoubikeGa(int n_ell, int n_max_gen, int n_station_id, int n_park) {
             generator_model[i][i2] = 1.0/double(n_park*2+1);
 	    }
     }
-    park = n_park ;
     max_gen = n_max_gen;
     ell = n_ell;
     station_id = n_station_id;
     generation = 0;
+	fitnessFunction = new FitnessFunction(station_id);
+	park = fitnessFunction->get_total();
+	//cout << "park = " << park << endl;
 }
 
 YoubikeGa::~YoubikeGa() {
@@ -58,7 +60,8 @@ void YoubikeGa::run() {
         sample_2=s_2.sample(generator_model,park);
         // 2. ask fitness function
 		//FitnessFunction f;
-		//int fitness = f.calculate_fitness();
+		int fitness = fitnessFunction->calculate_fitness();
+		cout << "fitness = " << fitness << endl;
         // 3. update model
         
         // 4. generation += 1

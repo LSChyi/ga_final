@@ -21,6 +21,7 @@ private:
     int station_id;
     int generation;
     int park;
+	FitnessFunction* fitnessFunction;
 };
 
 #endif

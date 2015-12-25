@@ -18,8 +18,6 @@ int main(int argc, char *argv[]) {
     int max_gen = atoi(argv[5]);
     bool display = (atoi(argv[6]) > 0) ? true : false ;
     
-	FitnessFunction f;
-    
     for(int i = 0; i < repeat; ++i) {
         YoubikeGa ga(ell, max_gen, station_id, park);
         ga.run();
