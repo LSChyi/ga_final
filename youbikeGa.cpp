@@ -19,7 +19,6 @@ YoubikeGa::YoubikeGa(int n_ell, int n_max_gen, int n_station_id, int n_park) {
     generation = 0;
 	fitnessFunction = new FitnessFunction(station_id);
 	park = fitnessFunction->get_total();
-	//cout << "park = " << park << endl;
 }
 
 YoubikeGa::~YoubikeGa() {
@@ -51,16 +50,33 @@ bool YoubikeGa::should_terminate() {
 }
 
 void YoubikeGa::run() {
-    while(should_terminate()) {
+	/*There is something wrong with the chromosome
+	  so I test my part here,
+	  the following part could be deleted once chromosome is fixed*/
+	//fitnessFunciton Test
+	int* example_chromosome = new int[48];
+	for(int i = 0; i < 48; i++)
+		example_chromosome[i] = 0;
+	example_chromosome[3] = -40;
+	example_chromosome[30] = 40;
+
+	int fitness = fitnessFunction->calculate_fitness(example_chromosome);
+	cout << "fitness = " << fitness << endl;
+	//////////////////////
+    
+	
+	while(should_terminate()) {
         // 1. generate two chromosome
         Chromosome s_1(ell),s_2(ell);
         int* sample_1;
         int* sample_2;
         sample_1=s_1.sample(generator_model,park);
         sample_2=s_2.sample(generator_model,park);
-        // 2. ask fitness function
-		//FitnessFunction f;
-		int fitness = fitnessFunction->calculate_fitness();
+		// 2. ask fitness function
+		int* ex_chromosome = new int[48];
+		for(int i = 0; i < 48; i++)
+			ex_chromosome[i] = 0;
+		int fitness = fitnessFunction->calculate_fitness(ex_chromosome);
 		cout << "fitness = " << fitness << endl;
         // 3. update model
         

@@ -13,15 +13,16 @@ typedef struct{
 
 class FitnessFunction {
 public:
-    FitnessFunction(int station_id) { load_data("../include/model.txt"); };
-//    FitnessFunction(int station_id) {load_data(station_id);};
+//    FitnessFunction(int station_id) { load_data("../include/model.txt"); };
+    FitnessFunction(int station_id) { load_data(station_id); };
 //    ~FitnessFunction();
-    int get_total(){ return 88; }
-    int calculate_fitness();
+    int get_total(){ return model.size(); }
+    int calculate_fitness(int* chromosome);
 private:
-    void renew_model(string newOutFile);
-    void load_data(string str);
+    void load_data(int station_id);
+    void output(int* instance, string file_name); 
 	vector<Norm> model;
+	int id;
 };
 
 #endif
