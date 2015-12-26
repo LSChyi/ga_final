@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <cstdlib>
 #include <ctime>
@@ -38,14 +39,14 @@ int FitnessFunction::calculate_fitness(int* chromosome)
 	instance_sum[0] = initial_bike_number+chromosome[0];
 	fitness += (chromosome[0]==0) ? 0 : punish;
 	if(chromosome[0] != 0)
-		cout << "load bikes and punish " << punish << " at 0 minute!" << endl;
+		cout << "load " << setw(4) <<  chromosome[0] << " bikes and punish " << punish << " at    0 minute!" << endl;
 	for(int i = 1; i< model.size(); i++){
 		instance_sum[i] = instance_sum[i-1]+instance[i];
 	    if( i%30 == 0){
 	        instance_sum[i] += chromosome[(int)(i/30)];
 	        fitness += (chromosome[(int)(i/30)]==0) ? 0 : punish;
             if(chromosome[(int)(i/30)] != 0)
-				cout << "load bikes and punish " << punish << " at " << i << " minute!" << endl;
+				cout << "load " << setw(4) << chromosome[(int)(i/30)] << " bikes and punish " << punish << " at " << setw(4) << i << " minute!" << endl;
 		}
 		if( instance_sum[i] < 0 )
 			fitness += instance_sum[i];

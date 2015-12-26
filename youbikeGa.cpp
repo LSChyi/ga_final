@@ -57,7 +57,8 @@ void YoubikeGa::run() {
 	int* example_chromosome = new int[48];
 	for(int i = 0; i < 48; i++)
 		example_chromosome[i] = 0;
-	example_chromosome[3] = -40;
+	example_chromosome[0] = -40;
+	example_chromosome[20] = -40;
 	example_chromosome[30] = 40;
 
 	int fitness = fitnessFunction->calculate_fitness(example_chromosome);
