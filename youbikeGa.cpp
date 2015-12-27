@@ -57,12 +57,17 @@ void YoubikeGa::run() {
 	int* example_chromosome = new int[48];
 	for(int i = 0; i < 48; i++)
 		example_chromosome[i] = 0;
-	example_chromosome[0] = -40;
-	example_chromosome[20] = -40;
-	example_chromosome[30] = 40;
+//	example_chromosome[40] = -80;
+//	example_chromosome[30] = 40;
 
-	int fitness = fitnessFunction->calculate_fitness(example_chromosome);
-	cout << "fitness = " << fitness << endl;
+    int fitness = 0;
+	int repeat = 1000;
+    for(int i = 0; i < repeat; i++){
+	    int f = fitnessFunction->calculate_fitness(example_chromosome);
+//	    cout << "fitness = " << f << endl;
+	    fitness += f;
+	}
+	cout << "avg fitness = " << (fitness/repeat) << endl;
 	//////////////////////
     
 	

@@ -12,7 +12,7 @@ using namespace std;
 int FitnessFunction::calculate_fitness(int* chromosome)
 {
 	int max_bike_number = 88;
-	int initial_bike_number = 88;
+	int initial_bike_number = 44;
 	int punish = -2000;
 	double fitness = 0;
 	
@@ -38,15 +38,15 @@ int FitnessFunction::calculate_fitness(int* chromosome)
 	
 	instance_sum[0] = initial_bike_number+chromosome[0];
 	fitness += (chromosome[0]==0) ? 0 : punish;
-	if(chromosome[0] != 0)
-		cout << "load " << setw(4) <<  chromosome[0] << " bikes and punish " << punish << " at    0 minute!" << endl;
+//	if(chromosome[0] != 0)
+//		cout << "load " << setw(4) <<  chromosome[0] << " bikes and punish " << punish << " at    0 minute!" << endl;
 	for(int i = 1; i< model.size(); i++){
 		instance_sum[i] = instance_sum[i-1]+instance[i];
 	    if( i%30 == 0){
 	        instance_sum[i] += chromosome[(int)(i/30)];
 	        fitness += (chromosome[(int)(i/30)]==0) ? 0 : punish;
-            if(chromosome[(int)(i/30)] != 0)
-				cout << "load " << setw(4) << chromosome[(int)(i/30)] << " bikes and punish " << punish << " at " << setw(4) << i << " minute!" << endl;
+//            if(chromosome[(int)(i/30)] != 0)
+//				cout << "load " << setw(4) << chromosome[(int)(i/30)] << " bikes and punish " << punish << " at " << setw(4) << i << " minute!" << endl;
 		}
 		if( instance_sum[i] < 0 )
 			fitness += instance_sum[i];
@@ -86,8 +86,9 @@ void FitnessFunction::load_data(int station_id)
 	model.clear();
 	stringstream ss;
 	ss << station_id;
-    string str = "../include/model"+ss.str()+".txt";
-    ifstream infile;
+    //string str = "../include/model"+ss.str()+".txt";
+    string str = "../include/20151227model.txt";
+	ifstream infile;
 	infile.open(str);
 	if(!infile)
 		cerr << "Can not open file : " << str << endl;
