@@ -54,20 +54,20 @@ void YoubikeGa::run() {
 	  so I test my part here,
 	  the following part could be deleted once chromosome is fixed*/
 	//fitnessFunciton Test
+	int initial_bike_number = 44;
+	int end_bike_number;
+	int repeat = 100;
 	int* example_chromosome = new int[48];
 	for(int i = 0; i < 48; i++)
 		example_chromosome[i] = 0;
-//	example_chromosome[40] = -80;
-//	example_chromosome[30] = 40;
-
-    int fitness = 0;
-	int repeat = 1000;
-    for(int i = 0; i < repeat; i++){
-	    int f = fitnessFunction->calculate_fitness(example_chromosome);
-//	    cout << "fitness = " << f << endl;
-	    fitness += f;
-	}
-	cout << "avg fitness = " << (fitness/repeat) << endl;
+	double original_avg_fitness = fitnessFunction->calculate_avg_fitness(example_chromosome, initial_bike_number, end_bike_number, repeat);
+	cout << "origianl avg_fitness = " << original_avg_fitness << endl;
+	
+	
+	example_chromosome[20] = -60;
+	//example_chromosome[30] = 60;
+	double avg_fitness = fitnessFunction->calculate_avg_fitness(example_chromosome, initial_bike_number, end_bike_number, repeat);
+	cout << "avg_fitness = " << avg_fitness << endl;
 	//////////////////////
     
 	
@@ -79,11 +79,11 @@ void YoubikeGa::run() {
         sample_1=s_1.sample(generator_model,park);
         sample_2=s_2.sample(generator_model,park);
 		// 2. ask fitness function
-		int* ex_chromosome = new int[48];
+		int* example_chromosome = new int[48];
 		for(int i = 0; i < 48; i++)
-			ex_chromosome[i] = 0;
-		int fitness = fitnessFunction->calculate_fitness(ex_chromosome);
-		cout << "fitness = " << fitness << endl;
+			example_chromosome[i] = 0;
+		double fitness = fitnessFunction->calculate_fitness(example_chromosome, initial_bike_number, end_bike_number, 0);
+		double avg_fitness = fitnessFunction->calculate_avg_fitness(example_chromosome, initial_bike_number, end_bike_number, repeat);
         // 3. update model
         
         // 4. generation += 1
