@@ -78,7 +78,7 @@ double FitnessFunction::calculate_fitness(int* chromosome, int _initial_bike_num
     _end_bike_number = instance_sum[model.size()-1];
 
 	stringstream ss1;
-    ss1 << "../output/total" << id << "_" << iteration << ".csv";
+    ss1 << "../output/totalCSV/total" << id << "_" << iteration << ".csv";
     output(instance_sum, ss1.str());
 
 
