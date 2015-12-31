@@ -41,8 +41,8 @@ double FitnessFunction::calculate_fitness(int* chromosome, int _initial_bike_num
 	for(int i = 0; i < model.size(); i++){
 		random_device generator;
 		normal_distribution<double> distribution(model[i].mean, model[i].var);
-		//d_instance[i] = distribution(generator);//TODO find out why!!
-		d_instance[i] = -1*distribution(generator);
+		d_instance[i] = distribution(generator);//TODO find out why!!
+		//d_instance[i] = -1*distribution(generator);
 		instance[i] = (d_instance[i]>-0.5)?(int)(d_instance[i]+0.5):(int)(d_instance[i]-0.5);
         #ifdef DEBUG
 		cout << "d_instance[" << i << "] = " << d_instance[i] << endl;
