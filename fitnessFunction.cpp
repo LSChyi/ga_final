@@ -118,6 +118,7 @@ void FitnessFunction::load_data(int station_id)
 		cerr << "Can not open file : " << str << endl;
 	int minute;
 	double mean, var;
+	infile >> total_park;
 	while(infile >> minute >> mean >> var){
 		Norm n = {.minute = minute, .mean = mean, .var = var};
 	    model.push_back(n);
