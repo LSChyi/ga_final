@@ -91,3 +91,15 @@ void YoubikeGa::run() {
 		
     }
 }
+
+void YoubikeGa::output_model() {
+    cout << "[" << endl;
+    for(int i = 0; i < ell; ++i) {
+        cout << "    " << "[ ";
+        for(int j = 0; j < ell; ++j) {
+            cout << generator_model[i][j] << " ";
+        }
+        cout << "    " << "]" << endl;
+    }
+    cout << "]" << endl;
+}

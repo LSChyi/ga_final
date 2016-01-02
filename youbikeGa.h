@@ -10,6 +10,7 @@ public:
     ~YoubikeGa();
     void run();
     Chromosome result();
+    void output_model();
 
 private:
     bool should_terminate();
