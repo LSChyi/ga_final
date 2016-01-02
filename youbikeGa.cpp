@@ -22,8 +22,13 @@ YoubikeGa::YoubikeGa(int n_ell, int n_max_gen, int n_station_id, int n_park) {
 }
 
 YoubikeGa::~YoubikeGa() {
-    if(generator_model != NULL)
+    if(generator_model != NULL) {
+        for(int i = 0; i < ell; ++i) {
+            delete []generator_model[i];
+        }
+
         delete []generator_model;
+    }
 }
 
 bool YoubikeGa::should_terminate() {
