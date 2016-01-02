@@ -6,6 +6,7 @@
 using namespace std;
 
 YoubikeGa::YoubikeGa(int n_ell, int n_max_gen, int n_station_id, int n_park) {
+    ell = n_ell;
     generator_model = new double* [ell];
     for(int i = 0; i < n_ell; ++i) {
 		generator_model[i] = new double [n_park*2+1] ;  //  -n_park ~ 0 ~ +n_park
@@ -14,7 +15,6 @@ YoubikeGa::YoubikeGa(int n_ell, int n_max_gen, int n_station_id, int n_park) {
 	    }
     }
     max_gen = n_max_gen;
-    ell = n_ell;
     station_id = n_station_id;
     generation = 0;
 	fitnessFunction = new FitnessFunction(station_id);
