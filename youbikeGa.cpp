@@ -78,6 +78,7 @@ void YoubikeGa::run() {
 	
 	while(should_terminate()) {
         // 1. generate two chromosome
+        srand (time(NULL)); // RAND
         Chromosome s_1(ell),s_2(ell);
         int* sample_1;
         int* sample_2;
