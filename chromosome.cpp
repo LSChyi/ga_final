@@ -32,8 +32,8 @@ void Chromosome::output() {
 
 int* Chromosome::sample(double** p_vec,int n_park) {
 	for(int i = 0 ;i < size; i++){
-		srand (time(NULL));
-		double dise = (rand()%(2*n_park+1))/(2*n_park+1);
+	
+		double dise = double((rand()%(2*n_park+1)))/(2*n_park+1);
 	    double temp = 0;
 		for(int i2 = 0 ;i2 < n_park*2+1; i2++){
 		    temp += p_vec[i][i2];
