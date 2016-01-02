@@ -11,7 +11,7 @@ YoubikeGa::YoubikeGa(int n_ell, int n_max_gen, int n_station_id) {
     generator_model = new double* [ell];
     for(int i = 0; i < n_ell; ++i) {
 		generator_model[i] = new double [park*2+1] ;  //  -n_park ~ 0 ~ +n_park
-		for(int i2 =0 ; i2 < park; i2++){
+		for(int i2 =0 ; i2 < park*2+1; i2++){
             generator_model[i][i2] = 1.0/double(park*2+1);
 	    }
     }
@@ -39,7 +39,7 @@ bool YoubikeGa::should_terminate() {
     int temp = 0; 
     for (int i = 0 ; i < ell; i++){
 		 bool check = true;
-		 for (int i2 = 0 ;i2 < park ; i2++){
+		 for (int i2 = 0 ;i2 < park*2+1 ; i2++){
 		     if (generator_model[i][i2]>0.999){
 			     check = false;
 			     break;
