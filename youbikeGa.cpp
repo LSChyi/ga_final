@@ -5,7 +5,7 @@
 #include "fitnessFunction.h"
 using namespace std;
 
-YoubikeGa::YoubikeGa(int n_ell, int n_max_gen, int n_station_id,,int population_size) {
+YoubikeGa::YoubikeGa(int n_ell, int n_max_gen, int n_station_id,int population_size) {
     ell = n_ell;
     park = fitnessFunction->get_total();
     generator_model = new double* [ell];
@@ -57,7 +57,7 @@ bool YoubikeGa::should_terminate() {
 }
 
 void YoubikeGa::run() {
-	while(should_terminate()) {
+	while(!should_terminate()) {
         // 1. generate two chromosome
         srand (time(NULL)); // RAND
         int* sample_1;
