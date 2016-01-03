@@ -9,7 +9,7 @@
 #define NDEBUG
 using namespace std;
 
-#define PUNISH 0 // should be negative!!!
+#define PUNISH -30 // should be negative!!!
 #define REPEAT 20
 
 double FitnessFunction::get_fitness(int* chromosome){

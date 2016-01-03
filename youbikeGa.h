@@ -26,6 +26,7 @@ private:
     Chromosome* sample_f1;
     Chromosome* sample_f2;
     int n;
+	int nfe;
 };
 
 #endif
