@@ -18,7 +18,8 @@ YoubikeGa::YoubikeGa(int n_ell, int n_max_gen, int n_station_id) {
     max_gen = n_max_gen;
     station_id = n_station_id;
     generation = 0;
-	fitnessFunction = new FitnessFunction(station_id);
+    fitnessFunction = new FitnessFunction(station_id);
+    sample_f =new Chromosome(ell);
 }
 
 YoubikeGa::~YoubikeGa() {
@@ -58,11 +59,10 @@ void YoubikeGa::run() {
 	while(should_terminate()) {
         // 1. generate two chromosome
         srand (time(NULL)); // RAND
-        Chromosome s_1(ell),s_2(ell);
         int* sample_1;
         int* sample_2;
-        sample_1=s_1.sample(generator_model,park);
-        sample_2=s_2.sample(generator_model,park);
+        sample_1=sample_f->sample(generator_model,park);
+        sample_2=sample_f->sample(generator_model,park);
 		// 2. ask fitness function
 		int* example_chromosome = new int[48];
 		for(int i = 0; i < 48; i++)

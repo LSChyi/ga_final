@@ -22,7 +22,8 @@ private:
     int station_id;
     int generation;
     int park;
-	FitnessFunction* fitnessFunction;
+    FitnessFunction* fitnessFunction;
+    Chromosome* sample_f;
 };
 
 #endif
