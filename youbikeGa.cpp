@@ -18,14 +18,12 @@ YoubikeGa::YoubikeGa(int n_ell, int n_max_gen, int n_station_id,int population_s
     sample_f2 =new Chromosome(ell);
     n = population_size;
     generator_model = new double* [ell];
-	clock_t tStart = clock();
     for(int i = 0; i < n_ell; ++i) {
 		generator_model[i] = new double [park*2+1] ;  //  -n_park ~ 0 ~ +n_park
 		for(int i2 =0 ; i2 < park*2+1; i2++){
             generator_model[i][i2] = 1.0/double(park*2+1);
 	    }
     }
-    cout << "generator_moel costs : " << (double)((clock()-tStart)/CLOCKS_PER_SEC) << "s" <<  endl;
 }
 
 YoubikeGa::~YoubikeGa() {
@@ -62,6 +60,13 @@ bool YoubikeGa::should_terminate() {
 }
 
 void YoubikeGa::run() {
+        int* chromosome = new int[48];
+        clock_t tStart = clock();
+        fitnessFunction->get_fitness(chromosome);
+        double fCost = (double)((clock()-tStart)*1000/CLOCKS_PER_SEC);
+        cout << "call F cost: " << fCost << "ms" <<  endl;
+        cout << "one Generation cost: " << fCost * 30 * 2/1000 << "s" << endl;
+            
 	while(!should_terminate()) {
 		cout << endl <<  "Generation " << generation << endl;
         // 1. generate two chromosome
@@ -73,18 +78,18 @@ void YoubikeGa::run() {
         int* best_c; 
         while (tournament --)
         {
-        sample_1=sample_f1->sample(generator_model,park);
-        sample_2=sample_f2->sample(generator_model,park);
-		// 2. ask fitness function
+	    sample_1=sample_f1->sample(generator_model,park);
+            sample_2=sample_f2->sample(generator_model,park);
+	    // 2. ask fitness function
 	    double avg_fitness_1 = fitnessFunction->get_fitness(sample_1);
 	    nfe++;
-		double avg_fitness_2 = fitnessFunction->get_fitness(sample_2);
-        nfe++;
-		if(avg_fitness_1>best)
-          {
-          best =avg_fitness_1;
-          best_c = sample_1;  
-         }
+	    double avg_fitness_2 = fitnessFunction->get_fitness(sample_2);
+            nfe++;
+	    if(avg_fitness_1>best)
+            {
+               best =avg_fitness_1;
+               best_c = sample_1;  
+            }
          if(avg_fitness_2>best)
           {
           best =avg_fitness_2;

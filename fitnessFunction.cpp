@@ -5,12 +5,14 @@
 #include <ctime>
 #include <random>
 #include <sstream>
+#include <chrono>
+#include <ctime>
 #include "fitnessFunction.h"
 #define NDEBUG
 using namespace std;
 
 #define PUNISH -30 // should be negative!!!
-#define REPEAT 20
+#define REPEAT 100
 
 double FitnessFunction::get_fitness(int* chromosome){
 	//initial number of bikes = total_park/2
@@ -47,21 +49,27 @@ double FitnessFunction::calculate_fitness(int* chromosome, int _initial_bike_num
 	double* d_instance = new double[1440];
 	int* instance = new int[1440];
 	int* instance_sum = new int[1440];
+//      double costTime = 0;
 
 	for(int i = 0; i < model.size(); i++){
-		random_device generator;
+
+  //              clock_t tStart = clock();
+                auto seed = chrono::high_resolution_clock::now().time_since_epoch().count();
+		mt19937 generator(seed);
 		normal_distribution<double> distribution(model[i].mean, model[i].var);
-		d_instance[i] = distribution(generator);//TODO find out why!!
-		//d_instance[i] = -1*distribution(generator);
+		d_instance[i] = distribution(generator);
+    //            costTime += (double)(clock()-tStart)*1000/CLOCKS_PER_SEC;
+
 		instance[i] = (d_instance[i]>-0.5)?(int)(d_instance[i]+0.5):(int)(d_instance[i]-0.5);
         #ifdef DEBUG
 		cout << "d_instance[" << i << "] = " << d_instance[i] << endl;
 		cout << "  instance[" << i << "] = " << instance[i] << endl;
 	    #endif
 	}
-	stringstream ss;
-    ss << "../output/instance" << id << "_" << iteration << ".csv";
-    output(instance, ss.str());
+      //  cout << "random costTime = " << costTime/model.size() << endl;
+//	stringstream ss;
+//    ss << "../output/instance" << id << "_" << iteration << ".csv";
+//    output(instance, ss.str());
 	
 	
 	instance_sum[0] = initial_bike_number+chromosome[0];

@@ -19,7 +19,6 @@ int main(int argc, char *argv[]) {
     int population_size = atoi(argv[6]);
     for(int i = 0; i < repeat; ++i) {
         YoubikeGa ga(ell, max_gen, station_id,population_size);
-		cout << "ga.run()" << endl;
         ga.run();
     }
 
