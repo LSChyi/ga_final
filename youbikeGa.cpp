@@ -5,7 +5,7 @@
 #include "fitnessFunction.h"
 using namespace std;
 
-YoubikeGa::YoubikeGa(int n_ell, int n_max_gen, int n_station_id) {
+YoubikeGa::YoubikeGa(int n_ell, int n_max_gen, int n_station_id,,int population_size) {
     ell = n_ell;
     park = fitnessFunction->get_total();
     generator_model = new double* [ell];
@@ -20,6 +20,7 @@ YoubikeGa::YoubikeGa(int n_ell, int n_max_gen, int n_station_id) {
     generation = 0;
     fitnessFunction = new FitnessFunction(station_id);
     sample_f =new Chromosome(ell);
+    n = population_size;
 }
 
 YoubikeGa::~YoubikeGa() {
@@ -64,13 +65,33 @@ void YoubikeGa::run() {
         sample_1=sample_f->sample(generator_model,park);
         sample_2=sample_f->sample(generator_model,park);
 		// 2. ask fitness function
-		int* example_chromosome = new int[48];
+	    /*	int* example_chromosome = new int[48];
 		for(int i = 0; i < 48; i++)
 			example_chromosome[i] = 0;
 		double fitness = fitnessFunction->get_fitness(example_chromosome);
 	    cout << "fitness = " << fitness << endl;
+	    */
+	    double avg_fitness_1 = fitnessFunction->get_fitness(sample_1);
+	    double avg_fitness_2 = fitnessFunction->get_fitness(sample_2);
         // 3. update model
-        
+        if (avg_fitness_1 > avg_fitness_2){
+			for(int i = 0 ; i< ell ; i++){
+			   double update_value = 1.0/n;	
+			   if(generator_model[i][sample_2[i]+park]<update_value)	
+		              update_value = generator_model[i][sample_2[i]+park]; 
+			   generator_model[i][sample_2[i]+park]-= update_value; 	
+			   generator_model[i][sample_1[i]+park]+= update_value;
+			 }
+	}
+        else if (avg_fitness_1 < avg_fitness_2){
+		for(int i = 0 ; i< ell ; i++){
+		   double update_value = 1.0/n;	
+		   if(generator_model[i][sample_1[i]+park]<update_value)	
+		     update_value = generator_model[i][sample_1[i]+park]; 
+		   generator_model[i][sample_1[i]+park]-= update_value; 	
+		   generator_model[i][sample_2[i]+park]+= update_value;
+	        }	
+        }
         // 4. generation += 1
         generation += 1;
 		
