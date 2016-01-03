@@ -24,6 +24,7 @@ private:
     int park;
     FitnessFunction* fitnessFunction;
     Chromosome* sample_f;
+    int n;
 };
 
 #endif
