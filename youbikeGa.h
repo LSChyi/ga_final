@@ -23,7 +23,8 @@ private:
     int generation;
     int park;
     FitnessFunction* fitnessFunction;
-    Chromosome* sample_f;
+    Chromosome* sample_f1;
+    Chromosome* sample_f2;
     int n;
 };
 
