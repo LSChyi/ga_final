@@ -6,7 +6,7 @@
 
 class YoubikeGa {
 public:
-    YoubikeGa(int n_ell, int n_max_gen, int n_station_id);
+    YoubikeGa(int n_ell, int n_max_gen, int n_station_id,int population_size);
     ~YoubikeGa();
     void run();
     Chromosome result();
