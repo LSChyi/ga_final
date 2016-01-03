@@ -15,3 +15,5 @@ fitnessFunction.o: fitnessFunction.h fitnessFunction.cpp
 
 clean:
 	rm -f bin/*.o *.o
+	rm -f output/*.csv
+	rm -f output/totalCSV/*.csv
