@@ -10,18 +10,28 @@
 using namespace std;
 
 #define PUNISH 0
+#define REPEAT 100
 
-double FitnessFunction::calculate_avg_fitness(int* chromosome, int _initial_bike_number, int& end_bike_number, int repeat )
+double FitnessFunction::get_fitness(int* chromosome){
+	//initial number of bikes = total_park/2
+	return calculate_avg_fitness(chromosome, (total_park/2), REPEAT);
+}
+
+
+double FitnessFunction::calculate_avg_fitness(int* chromosome, int _initial_bike_number, int repeat )
 {
+	int end_bike_number;
     double avg_fitness = 0;
 	int initial_bike_number = _initial_bike_number;
     for(int i = 0; i < repeat; i++){
 		double fitness = calculate_fitness(chromosome, initial_bike_number, end_bike_number, i);
 		avg_fitness += fitness;
-		//cout << "fitness = " << setw(8) << fitness << ", end = " << end_bike_number << endl;
-		//cout << "intial = " << initial_bike_number << endl;
-		//cout << "end = " << end_bike_number << endl << endl;
-	    initial_bike_number = end_bike_number;
+		#ifdef DEBUG
+		cout << "fitness = " << setw(8) << fitness << ", end = " << end_bike_number << endl;
+		cout << "intial = " << initial_bike_number << endl;
+		cout << "end = " << end_bike_number << endl << endl;
+	    #endif
+		initial_bike_number = end_bike_number;
 	}
     avg_fitness /= repeat;
     return avg_fitness;

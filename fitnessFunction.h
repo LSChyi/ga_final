@@ -13,12 +13,11 @@ typedef struct{
 
 class FitnessFunction {
 public:
-//    FitnessFunction(int station_id) { load_data("../include/model.txt"); };
     FitnessFunction(int station_id) { load_data(station_id); };
 //    ~FitnessFunction();
     int get_total(){ return total_park; }
-    double calculate_avg_fitness(int*, int, int&, int);
-//	double calculate_fitness(int* chromosome, int _initial_bike_number, int& _end_bike_number);
+	double get_fitness(int* chromosome);
+    double calculate_avg_fitness(int* chromosome, int initial_bike_number, int repeat);
 	double calculate_fitness(int* chromosome, int _initial_bike_number, int& _end_bike_number, int iteration);
 private:
     void load_data(int station_id);

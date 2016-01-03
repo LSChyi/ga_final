@@ -55,27 +55,6 @@ bool YoubikeGa::should_terminate() {
 }
 
 void YoubikeGa::run() {
-	/*There is something wrong with the chromosome
-	  so I test my part here,
-	  the following part could be deleted once chromosome is fixed*/
-	//fitnessFunciton Test
-	int initial_bike_number = 44;
-	int end_bike_number;
-	int repeat = 20;
-	int* example_chromosome = new int[48];
-	for(int i = 0; i < 48; i++)
-		example_chromosome[i] = 0;
-	double original_avg_fitness = fitnessFunction->calculate_avg_fitness(example_chromosome, initial_bike_number, end_bike_number, repeat);
-	cout << "origianl avg_fitness = " << original_avg_fitness << endl;
-	
-	
-//	example_chromosome[20] = -60;
-	//example_chromosome[30] = 60;
-	double avg_fitness = fitnessFunction->calculate_avg_fitness(example_chromosome, initial_bike_number, end_bike_number, repeat);
-	cout << "avg_fitness = " << avg_fitness << endl;
-	//////////////////////
-    
-	
 	while(should_terminate()) {
         // 1. generate two chromosome
         srand (time(NULL)); // RAND
@@ -88,8 +67,8 @@ void YoubikeGa::run() {
 		int* example_chromosome = new int[48];
 		for(int i = 0; i < 48; i++)
 			example_chromosome[i] = 0;
-		double fitness = fitnessFunction->calculate_fitness(example_chromosome, initial_bike_number, end_bike_number, 0);
-		double avg_fitness = fitnessFunction->calculate_avg_fitness(example_chromosome, initial_bike_number, end_bike_number, repeat);
+		double fitness = fitnessFunction->get_fitness(example_chromosome);
+	    cout << "fitness = " << fitness << endl;
         // 3. update model
         
         // 4. generation += 1
