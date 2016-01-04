@@ -4,6 +4,11 @@
 #include "chromosome.h"
 #include "fitnessFunction.h"
 #include <ctime>
+
+#include <algorithm>
+#include<vector>
+#include<map>
+#include<math.h>
 using namespace std;
 
 struct bike{
