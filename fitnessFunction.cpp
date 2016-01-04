@@ -73,14 +73,14 @@ double FitnessFunction::calculate_fitness(int* chromosome, int _initial_bike_num
 	
 	
 	instance_sum[0] = initial_bike_number+chromosome[0];
-	fitness += (chromosome[0]==0) ? 0 : PUNISH;
+	fitness += (chromosome[0]==0) ? 0 : PUNISH - abs(chromosome[0]*-0.1);
 //	if(chromosome[0] != 0)
 //		cout << "load " << setw(4) <<  chromosome[0] << " bikes and PUNISH " << PUNISH << " at    0 minute!" << endl;
 	for(int i = 1; i< model.size(); i++){
 		instance_sum[i] = instance_sum[i-1]+instance[i];
 	    if( i%30 == 0){
 	        instance_sum[i] += chromosome[(int)(i/30)];
-	        fitness += (chromosome[(int)(i/30)]==0) ? 0 : PUNISH - abs(chromosome[(int)(i/30)]*-1);
+	        fitness += (chromosome[(int)(i/30)]==0) ? 0 : PUNISH - abs(chromosome[(int)(i/30)]*-0.1);
 //            if(chromosome[(int)(i/30)] != 0)
 //				cout << "load " << setw(4) << chromosome[(int)(i/30)] << " bikes and PUNISH " << PUNISH << " at " << setw(4) << i << " minute!" << endl;
 		}
