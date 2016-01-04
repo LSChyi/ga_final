@@ -11,8 +11,8 @@
 #define NDEBUG
 using namespace std;
 
-#define PUNISH -30 // should be negative!!!
-#define REPEAT 100
+#define PUNISH -3 // should be negative!!!
+#define REPEAT 10
 
 double FitnessFunction::get_fitness(int* chromosome){
 	//initial number of bikes = total_park/2
@@ -80,7 +80,7 @@ double FitnessFunction::calculate_fitness(int* chromosome, int _initial_bike_num
 		instance_sum[i] = instance_sum[i-1]+instance[i];
 	    if( i%30 == 0){
 	        instance_sum[i] += chromosome[(int)(i/30)];
-	        fitness += (chromosome[(int)(i/30)]==0) ? 0 : PUNISH;
+	        fitness += (chromosome[(int)(i/30)]==0) ? 0 : PUNISH - abs(chromosome[(int)(i/30)]*-1);
 //            if(chromosome[(int)(i/30)] != 0)
 //				cout << "load " << setw(4) << chromosome[(int)(i/30)] << " bikes and PUNISH " << PUNISH << " at " << setw(4) << i << " minute!" << endl;
 		}
