@@ -19,10 +19,11 @@ YoubikeGa::YoubikeGa(int n_ell, int n_max_gen, int n_station_id,int population_s
     n = population_size;
     generator_model = new double* [ell];
     for(int i = 0; i < n_ell; ++i) {
-		generator_model[i] = new double [park*2+1] ;  //  -n_park ~ 0 ~ +n_park
+		generator_model[i] = new double [park*2+1];
 		for(int i2 =0 ; i2 < park*2+1; i2++){
-            generator_model[i][i2] = 1.0/double(park*2+1);
+            generator_model[i][i2] = 0.5/double(park*2+1);
 	    }
+        generator_model[i][park] = 0.5;
     }
 }
 
