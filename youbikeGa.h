@@ -11,7 +11,8 @@ public:
     void run();
     Chromosome result();
     void output_model();
-
+     void ecga();
+    void selection();
 private:
     bool should_terminate();
     void update_generator();
@@ -26,6 +27,7 @@ private:
     Chromosome* sample_f1;
     Chromosome* sample_f2;
     int n;
+    int tn;
 	int nfe;
     Chromosome* best_chromosome;
     double best_fitness;
