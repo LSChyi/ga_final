@@ -14,10 +14,12 @@ using namespace std;
 #define PUNISH -3 // should be negative!!!
 #define REPEAT 10
 
-double FitnessFunction::get_fitness(int* chromosome){
-	return calculate_avg_fitness(chromosome, (total_park/2), REPEAT);
+double FitnessFunction::get_fitness(int* chromosome, bool cache){
+	if(cache)
+		return calculete_avg_fitness_cache(chromosome, (total_park/2));
+	else
+		return calculate_avg_fitness(chromosome, (total_park/2), REPEAT);
 }
-
 
 double FitnessFunction::calculate_avg_fitness(int* chromosome, int _initial_bike_number, int repeat )
 {
@@ -153,5 +155,65 @@ void FitnessFunction::load_data(int station_id)
 }
 
 double FitnessFunction::calculete_avg_fitness_cache(int* chromosome, int initial_bike_number) {
-	return 0.0;
+	double avg_fitness = 0;
+	int end_bike_number = 0;
+
+	for(int i = 0; i < REPEAT; ++i) {
+		avg_fitness += calculete_fitness_cache(chromosome, initial_bike_number, end_bike_number, i);
+		initial_bike_number = end_bike_number;
+	}
+
+	return avg_fitness/REPEAT;
+}
+
+double FitnessFunction::calculete_fitness_cache(int* chromosome, int initial_bike_number, int& end_bike_number, int iteration) {
+	int instance_sum[14400];
+	double fitness = 0.0;
+
+	int chromosome_idx;
+
+	fitness += (chromosome[0] == 0) ? 0 : PUNISH;// - abs(chromosome[0]*-1);
+	instance_sum[0] = initial_bike_number + chromosome[0] + _instance[iteration][0];
+	// carry too much bike to here
+	if(instance_sum[0] > total_park) {
+		fitness += (instance_sum[0] - total_park)*(-1);
+		instance_sum[0] = total_park;
+	}
+	// bike number is less then 0 at begining
+	else if(instance_sum[0] < 0) {
+		fitness += instance_sum[0];
+		instance_sum[0] = 0;
+	}
+
+	for(int i = 1; i < model.size(); ++i) {
+
+		if(i % 30 == 0) {
+			chromosome_idx = (int)(i/30);
+
+			// punish if chromosome carry bikes not equal to 0
+			fitness += (chromosome[chromosome_idx] == 0) ? 0 : PUNISH;// - abs(chromosome[chromosome_idx]*-1);
+
+			// calculate how many bikes after put to(take away) here, and before truncate to park number
+			instance_sum[i] = instance_sum[i-1] + chromosome[chromosome_idx];
+		}
+		else {
+			instance_sum[i] = instance_sum[i-1];
+		}
+
+		// add current bike borrow
+		instance_sum[i] += _instance[iteration][i];
+
+		if(instance_sum[i] > total_park) {
+			fitness += (instance_sum[i] - total_park)*(-1);
+			instance_sum[i] = total_park;
+		}
+		else if(instance_sum[i] < 0) {
+			fitness += instance_sum[i];
+			instance_sum[i] = 0;
+		}
+	}
+
+	end_bike_number = instance_sum[model.size() - 1];
+
+	return fitness;
 }

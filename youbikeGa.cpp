@@ -63,7 +63,7 @@ bool YoubikeGa::should_terminate() {
 void YoubikeGa::run() {
         int* chromosome = new int[48];
         clock_t tStart = clock();
-        fitnessFunction->get_fitness(chromosome);
+        fitnessFunction->get_fitness(chromosome, true);
         double fCost = (double)((clock()-tStart)*1000/CLOCKS_PER_SEC);
         cout << "call F cost: " << fCost << "ms" <<  endl;
         cout << "one Generation cost: " << fCost * 30 * 2/1000 << "s" << endl;
@@ -82,9 +82,9 @@ void YoubikeGa::run() {
 	    sample_1=sample_f1->sample(generator_model,park);
             sample_2=sample_f2->sample(generator_model,park);
 	    // 2. ask fitness function
-	    double avg_fitness_1 = fitnessFunction->get_fitness(sample_1);
+	    double avg_fitness_1 = fitnessFunction->get_fitness(sample_1, true);
 	    nfe++;
-	    double avg_fitness_2 = fitnessFunction->get_fitness(sample_2);
+	    double avg_fitness_2 = fitnessFunction->get_fitness(sample_2, true);
             nfe++;
 	    if(avg_fitness_1>best)
             {
