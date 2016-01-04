@@ -25,6 +25,8 @@ YoubikeGa::YoubikeGa(int n_ell, int n_max_gen, int n_station_id,int population_s
 	    }
         generator_model[i][park] = 0.5;
     }
+    best_fitness = std::numeric_limits<double>::infinity()*(-1);
+    best_chromosome = new Chromosome(ell);
 }
 
 YoubikeGa::~YoubikeGa() {
@@ -85,44 +87,43 @@ void YoubikeGa::run() {
         int* best_c; 
         while (tournament --)
         {
-	    sample_1=sample_f1->sample(generator_model,park);
+    	    sample_1=sample_f1->sample(generator_model,park);
             sample_2=sample_f2->sample(generator_model,park);
-	    // 2. ask fitness function
-	    double avg_fitness_1 = fitnessFunction->get_fitness(sample_1, true, false);
-	    nfe++;
-	    double avg_fitness_2 = fitnessFunction->get_fitness(sample_2, true, false);
+    	    // 2. ask fitness function
+    	    double avg_fitness_1 = fitnessFunction->get_fitness(sample_1, true, false);
+    	    nfe++;
+    	    double avg_fitness_2 = fitnessFunction->get_fitness(sample_2, true, false);
             nfe++;
-	    if(avg_fitness_1>best)
+    	    if(avg_fitness_1>best)
+                {
+                   best =avg_fitness_1;
+                   best_c = sample_1;  
+                }
+            if(avg_fitness_2>best)
             {
-               best =avg_fitness_1;
-               best_c = sample_1;  
+                best =avg_fitness_2;
+                best_c = sample_2;  
             }
-         if(avg_fitness_2>best)
-          {
-          best =avg_fitness_2;
-          best_c = sample_2;  
-         }
-        // 3. update model
-        if (avg_fitness_1 > avg_fitness_2){
-                        for(int i = 0 ; i< ell ; i++){
-			   double update_value = 1.0/n;	
-			   if(generator_model[i][sample_2[i]+park]<update_value)	
-		              update_value = generator_model[i][sample_2[i]+park]; 
-			   generator_model[i][sample_2[i]+park]-= update_value; 	
-			   generator_model[i][sample_1[i]+park]+= update_value;
-                          
-			 }
-	}
-        else if (avg_fitness_1 < avg_fitness_2){
-               for(int i = 0 ; i< ell ; i++){
-		   double update_value = 1.0/n;	
-		   if(generator_model[i][sample_1[i]+park]<update_value)	
-		     update_value = generator_model[i][sample_1[i]+park]; 
-		   generator_model[i][sample_1[i]+park]-= update_value; 	
-		   generator_model[i][sample_2[i]+park]+= update_value;
- 
-	        }	
-        }
+            // 3. update model
+            if (avg_fitness_1 > avg_fitness_2){
+                            for(int i = 0 ; i< ell ; i++){
+    			   double update_value = 1.0/n;	
+    			   if(generator_model[i][sample_2[i]+park]<update_value)	
+    		              update_value = generator_model[i][sample_2[i]+park]; 
+    			   generator_model[i][sample_2[i]+park]-= update_value; 	
+    			   generator_model[i][sample_1[i]+park]+= update_value;
+                              
+    			 }
+    	    }
+            else if (avg_fitness_1 < avg_fitness_2){
+                for(int i = 0 ; i< ell ; i++){
+        		    double update_value = 1.0/n;	
+        		    if(generator_model[i][sample_1[i]+park]<update_value)	
+                        update_value = generator_model[i][sample_1[i]+park]; 
+        	        generator_model[i][sample_1[i]+park]-= update_value; 	
+        	        generator_model[i][sample_2[i]+park]+= update_value;
+    	        }
+            }
         }
         cout << "Best fitness : "<< best << endl;
         for(int i=0;i<ell;i++)
@@ -130,9 +131,17 @@ void YoubikeGa::run() {
         cout<<endl;
         // 4. generation += 1
         generation += 1;
+        if(best > best_fitness) {
+            best_fitness = best;
+            best_chromosome->init(best_c);
+        }
 		
     }
+    cout << "terminate" << endl;
 	cout << "NFE = " << nfe << endl;
+    cout << "best chromosome: ";
+    best_chromosome->output();
+    cout << "fitness: " << best_fitness << endl;
 }
 
 void YoubikeGa::output_model() {

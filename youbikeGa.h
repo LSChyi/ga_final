@@ -27,6 +27,8 @@ private:
     Chromosome* sample_f2;
     int n;
 	int nfe;
+    Chromosome* best_chromosome;
+    double best_fitness;
 };
 
 #endif
