@@ -6,6 +6,14 @@
 #include <ctime>
 using namespace std;
 
+struct bike{
+int fitness;
+int* trans;
+};
+
+int* pop[20000];
+bike youbike[20000];
+
 YoubikeGa::YoubikeGa(int n_ell, int n_max_gen, int n_station_id,int population_size) {
     nfe = 0;
 	ell = n_ell;
@@ -16,6 +24,7 @@ YoubikeGa::YoubikeGa(int n_ell, int n_max_gen, int n_station_id,int population_s
 	park = fitnessFunction->get_total();
     sample_f1 =new Chromosome(ell);
     sample_f2 =new Chromosome(ell);
+    tn=10000;  
     n = population_size;
     generator_model = new double* [ell];
     for(int i = 0; i < n_ell; ++i) {
@@ -155,3 +164,195 @@ void YoubikeGa::output_model() {
     }
     cout << "]" << endl;
 }
+
+////////////////// ecga  not sure can work ? ////////////////////
+
+
+
+char ref[10]={'0','1','2','3','4','5','6','7','8','9'};
+
+double count_mdl(int* model,int l)
+{
+int ta;
+double data=0;
+map<string,int> mymap;
+map<string,int>::iterator it;
+for(int i=0;i<10000;i++)	
+   {
+	string t_s="";
+	
+	for(int i2=0;i2<l;i2++)
+	   {
+		ta = pop[i][model[i2]] ;
+		int re = 0;
+		string a="";
+		while(1)
+		    {
+			 int y = ta %10;
+			 a += ref[y];
+			 ta /= 10 ;
+			 re ++;
+			 if(ta == 0)
+			   break;
+		    }
+		for(int i3 = re-1;i3>-1;i3--)
+		   t_s += a[i3];
+		 t_s+="_";	
+		}
+it = mymap.find(t_s);
+	if(it!= mymap.end())
+	   mymap[t_s]++;
+	else 
+	  mymap[t_s]=1; 	
+	  
+	 
+   }
+
+for(it = mymap.begin();it != mymap.end();it++)
+   {
+	double b=double((*it).second) ;
+	
+	double ans =(b* log2(b/10000));
+    data -= ans;			
+   }
+return data;
+}
+
+void YoubikeGa::ecga()
+{
+
+
+for(int i=0;i<tn;i++)
+   {
+    pop[i]=new int[ell];		
+	//
+	sample_f1->sample(generator_model,park,pop[i]);
+
+	
+   }	
+ 
+for(int i=tn;i<2*tn;i++)
+   pop[i]=new int[ell];
+  
+while(!should_terminate()) {
+//initial
+for(int i=0;i<tn;i++)
+   {
+	youbike[i].trans=pop[i];
+	youbike[i].fitness= i; // dfijfijfpifjpjfspajf	
+  }	
+// model buiding	
+vector<int> BB[48];
+int BB_length[48];
+double MDL;
+double total_mdl=0;
+bool able[48];
+double each_mdl[48];  
+for(int i=0;i<48;i++)	
+   {
+    BB_length[i]=1;		
+	BB[i].push_back(i);
+	int * ttt = new int[1];
+	ttt[0]=i;
+	able[i]=true;
+	each_mdl[i]=count_mdl(ttt,1); 
+	total_mdl+=each_mdl[i];
+   }	
+total_mdl += 48*log2(tn);   
+// MDL	
+
+MDL=total_mdl;
+while (1)
+{
+double temp_mdl,tt;
+double adapt;
+int merge1,merge2;
+for(int i=0;i<48;i++)
+  {
+   if(!able[i])
+      continue;
+   for(int i2=i+1;i2<48;i2++) 
+      {
+	  if(!able[i2])
+	     continue;
+	  int temp_l=BB_length[i]+BB_length[i2];
+	  int* temp_model =new int [temp_l];
+	  for(int j=0;j<BB_length[i];j++)
+	     temp_model[j] = BB[i][j];
+	  for(int j=BB_length[i];j<temp_l;j++)
+	     temp_model[j] = BB[i2][j-BB_length[i]]; 
+	  temp_mdl=count_mdl(temp_model,temp_l);
+	  delete temp_model;
+	  tt= total_mdl -each_mdl[i]-each_mdl[i2] + temp_mdl
+	  - (pow(2,double(BB_length[i]))-1)*log2(tn) - (pow(2,double(BB_length[i2]))-1)*log2(tn) +(pow(2,double(temp_l))-1)*log2(tn);
+	  if(MDL>tt)
+	    {
+		 MDL =tt;
+		 adapt = temp_mdl;
+		 merge1=i;
+		 merge2=i2;
+		}		
+	  }	
+   
+  }
+if (total_mdl ==MDL)
+   break;
+  
+cout<<generation<<endl;
+// merge
+
+cout<<merge1<<' '<<merge2<<endl;
+for(int i=0;i<BB_length[merge2];i++)
+   BB[merge1].push_back(BB[merge2][i]);
+each_mdl[merge1]=adapt;
+BB_length[merge1]+=BB_length[merge2];/**/
+total_mdl =MDL;
+able[merge2]=false;
+for(int i = 0; i<48;i++)
+   {
+   	for(int i2=0;i2<BB_length[i];i2++)
+	    cout<<BB[i][i2]<<' ';	
+	cout<<endl; 	
+	}
+
+}
+//sample
+
+for(int i=tn;i<2*tn;i++)
+   {
+    		
+    //
+	for(int j=0;j<48;j++)
+	   {
+	   if(!able[j])		
+		  continue;
+		 int a; 
+			a=rand()%10000;
+		for(int k=0;k<BB_length[j];k++)
+			pop[i][BB[j][k]]=pop[a][BB[j][k]];	
+	   }
+	
+	
+	youbike[i].trans=pop[i];
+	youbike[i].fitness= i; //ashduosahioashopfhaspfha
+	
+   }	
+// selection
+selection();  /* */
+
+	generation+=1;
+}	
+}
+
+void YoubikeGa::selection()
+{
+sort(youbike,youbike+tn+tn,compare);	
+for(int i=0;i<tn;i++)
+	for(int i2=0;i2<ell;i2++)
+      pop[i][i2] = youbike[i].trans[i2];
+
+}
+
+
+
+
