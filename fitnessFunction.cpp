@@ -11,12 +11,16 @@
 #define NDEBUG
 using namespace std;
 
-#define PUNISH -3 // should be negative!!!
-#define REPEAT 10
+#define PUNISH -1 // should be negative!!!
+#define REPEAT 20
 
-double FitnessFunction::get_fitness(int* chromosome, bool cache){
-	if(cache)
-		return calculete_avg_fitness_cache(chromosome, (total_park/2));
+double FitnessFunction::get_fitness(int* chromosome, bool cache, bool calculate_all){
+	if(cache) {
+		if(calculate_all)
+			return calculete_avg_fitness_cache(chromosome, (total_park/2), true);
+		else
+			return calculete_avg_fitness_cache(chromosome, (total_park/2), false);
+	}
 	else
 		return calculate_avg_fitness(chromosome, (total_park/2), REPEAT);
 }
@@ -140,8 +144,8 @@ void FitnessFunction::load_data(int station_id)
 
 	// for cache fitness
 	double tmp_distance;
-	_instance = new int* [REPEAT];
-	for(int i = 0; i < REPEAT; ++i) {
+	_instance = new int* [2*REPEAT];
+	for(int i = 0; i < 2*REPEAT; ++i) {
 		_instance[i] = new int[14400];
 
 		for(int j = 0; j < model.size(); ++j) {
@@ -154,16 +158,24 @@ void FitnessFunction::load_data(int station_id)
 	}
 }
 
-double FitnessFunction::calculete_avg_fitness_cache(int* chromosome, int initial_bike_number) {
+double FitnessFunction::calculete_avg_fitness_cache(int* chromosome, int initial_bike_number, bool calculate_all) {
 	double avg_fitness = 0;
 	int end_bike_number = 0;
 
-	for(int i = 0; i < REPEAT; ++i) {
-		avg_fitness += calculete_fitness_cache(chromosome, initial_bike_number, end_bike_number, i);
-		initial_bike_number = end_bike_number;
+	if(calculate_all) {
+		for(int i = 0; i < 2*REPEAT; ++i) {
+			avg_fitness += calculete_fitness_cache(chromosome, initial_bike_number, end_bike_number, i);
+			initial_bike_number = end_bike_number;
+		}
+		return avg_fitness/(REPEAT*2);
 	}
-
-	return avg_fitness/REPEAT;
+	else {
+		for(int i = 0; i < REPEAT; ++i) {
+			avg_fitness += calculete_fitness_cache(chromosome, initial_bike_number, end_bike_number, rand() % (2*REPEAT));
+			initial_bike_number = end_bike_number;
+		}
+		return avg_fitness/REPEAT;
+	}
 }
 
 double FitnessFunction::calculete_fitness_cache(int* chromosome, int initial_bike_number, int& end_bike_number, int iteration) {
@@ -172,16 +184,16 @@ double FitnessFunction::calculete_fitness_cache(int* chromosome, int initial_bik
 
 	int chromosome_idx;
 
-	fitness += (chromosome[0] == 0) ? 0 : PUNISH;// - abs(chromosome[0]*-1);
+	fitness += (chromosome[0] == 0) ? 0 : PUNISH - abs(chromosome[0]*-0.1);
 	instance_sum[0] = initial_bike_number + chromosome[0] + _instance[iteration][0];
 	// carry too much bike to here
 	if(instance_sum[0] > total_park) {
-		fitness += (instance_sum[0] - total_park)*(-1);
+		fitness += (instance_sum[0] - total_park)*(-10);
 		instance_sum[0] = total_park;
 	}
 	// bike number is less then 0 at begining
 	else if(instance_sum[0] < 0) {
-		fitness += instance_sum[0];
+		fitness += (instance_sum[0])*10;
 		instance_sum[0] = 0;
 	}
 
@@ -191,7 +203,7 @@ double FitnessFunction::calculete_fitness_cache(int* chromosome, int initial_bik
 			chromosome_idx = (int)(i/30);
 
 			// punish if chromosome carry bikes not equal to 0
-			fitness += (chromosome[chromosome_idx] == 0) ? 0 : PUNISH;// - abs(chromosome[chromosome_idx]*-1);
+			fitness += (chromosome[chromosome_idx] == 0) ? 0 : PUNISH - abs(chromosome[chromosome_idx]*-0.1);
 
 			// calculate how many bikes after put to(take away) here, and before truncate to park number
 			instance_sum[i] = instance_sum[i-1] + chromosome[chromosome_idx];
@@ -204,11 +216,11 @@ double FitnessFunction::calculete_fitness_cache(int* chromosome, int initial_bik
 		instance_sum[i] += _instance[iteration][i];
 
 		if(instance_sum[i] > total_park) {
-			fitness += (instance_sum[i] - total_park)*(-1);
+			fitness += (instance_sum[i] - total_park)*(-10);
 			instance_sum[i] = total_park;
 		}
 		else if(instance_sum[i] < 0) {
-			fitness += instance_sum[i];
+			fitness += (instance_sum[i])*10;
 			instance_sum[i] = 0;
 		}
 	}
