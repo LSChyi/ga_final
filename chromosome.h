@@ -7,7 +7,7 @@ public:
     ~Chromosome();
     void init(int values[]);
     void output();
-    int* sample(double** p_vec,int n_park);
+    void sample(double** p_vec,int n_park,int* g);
 private:
     int *genes;
     int size;
