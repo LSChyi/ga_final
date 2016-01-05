@@ -29,8 +29,9 @@ YoubikeGa::YoubikeGa(int n_ell, int n_max_gen, int n_station_id,int population_s
 	park = fitnessFunction->get_total();
     sample_f1 =new Chromosome(ell);
     sample_f2 =new Chromosome(ell);
-    tn=10000;  
+    
     n = population_size;
+    tn=n;  
     generator_model = new double* [ell];
     for(int i = 0; i < n_ell; ++i) {
 		generator_model[i] = new double [park*2+1];
@@ -186,7 +187,7 @@ int ta;
 double data=0;
 map<string,int> mymap;
 map<string,int>::iterator it;
-for(int i=0;i<10000;i++)	
+for(int i=0;i<1000;i++)	 //10000
    {
 	string t_s="";
 	
@@ -221,7 +222,7 @@ for(it = mymap.begin();it != mymap.end();it++)
    {
 	double b=double((*it).second) ;
 	
-	double ans =(b* log2(b/10000));
+	double ans =(b* log2(b/1000)); //10000
     data -= ans;			
    }
 return data;
@@ -309,10 +310,9 @@ for(int i=0;i<48;i++)
 if (total_mdl ==MDL)
    break;
   
-cout<<++record<<endl;
+
 // merge
 
-cout<<merge1<<' '<<merge2<<endl;
 for(int i=0;i<BB_length[merge2];i++)
    BB[merge1].push_back(BB[merge2][i]);
 each_mdl[merge1]=adapt;
@@ -321,6 +321,8 @@ total_mdl =MDL;
 able[merge2]=false;
 // print building blocks each time , can comment
 /* 
+cout<<++record<<endl;
+cout<<merge1<<' '<<merge2<<endl;
 cout<<"building blocks up :"<<endl;
 for(int i = 0; i<48;i++)
    {    
@@ -347,7 +349,7 @@ for(int i=tn;i<2*tn;i++)
 	   if(!able[j])		
 		  continue;
 		 int a; 
-			a=rand()%10000;
+			a=rand()%1000;  //10000
 		for(int k=0;k<BB_length[j];k++)
 			pop[i][BB[j][k]]=pop[a][BB[j][k]];	
 	   }
@@ -373,6 +375,10 @@ if(best_fitness>youbike[0].fitness)
   }
 	generation+=1;
 }	
+cout<<"overall best_fitness : "<<best_fitness<<endl;
+for(int i= 0 ;i<ell;i++)
+   cout<<best_chromosome[i]<<' ';
+cout<<endl;
 }
 
 void YoubikeGa::selection()
