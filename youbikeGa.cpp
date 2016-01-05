@@ -244,7 +244,7 @@ while(!should_terminate()) {
 for(int i=0;i<tn;i++)
    {
 	youbike[i].trans=pop[i];
-	youbike[i].fitness= i; // dfijfijfpifjpjfspajf	
+	youbike[i].fitness= get_fitness(pop[i], true, true); 	
   }	
 // model buiding	
 vector<int> BB[48];
@@ -339,8 +339,7 @@ for(int i=tn;i<2*tn;i++)
 	
 	
 	youbike[i].trans=pop[i];
-	youbike[i].fitness= i; //ashduosahioashopfhaspfha
-	
+	youbike[i].fitness= get_fitness(pop[i], true, true); 
    }	
 // selection
 selection();  /* */
