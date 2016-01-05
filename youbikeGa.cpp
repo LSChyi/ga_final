@@ -319,6 +319,8 @@ each_mdl[merge1]=adapt;
 BB_length[merge1]+=BB_length[merge2];/**/
 total_mdl =MDL;
 able[merge2]=false;
+// print building blocks each time , can comment 
+cout<<"building blocks update:"<<endl;
 for(int i = 0; i<48;i++)
    {    
         if(!able[i])
@@ -327,8 +329,12 @@ for(int i = 0; i<48;i++)
 	    cout<<BB[i][i2]<<' ';	
 	cout<<endl; 	
 	}
-
 }
+
+/// print building blocks each time , can comment 
+
+
+
 //sample
 
 for(int i=tn;i<2*tn;i++)
@@ -352,7 +358,10 @@ for(int i=tn;i<2*tn;i++)
    }	
 // selection
 selection();  /* */
+cout<<"generation : "<<generation<<endl;
+cout<<"best_fitness in this gerernation : ";
 cout<<youbike[0].fitness<<endl;
+cout<<"chromosome : ";
 for(int i= 0 ;i<ell;i++)
    cout<<youbike[0].trans[i]<<' ';
 cout<<endl;
