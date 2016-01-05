@@ -29,7 +29,7 @@ YoubikeGa::YoubikeGa(int n_ell, int n_max_gen, int n_station_id,int population_s
 	park = fitnessFunction->get_total();
     sample_f1 =new Chromosome(ell);
     sample_f2 =new Chromosome(ell);
-      
+    tn=10000;  
     n = population_size;
     generator_model = new double* [ell];
     for(int i = 0; i < n_ell; ++i) {
@@ -186,7 +186,7 @@ int ta;
 double data=0;
 map<string,int> mymap;
 map<string,int>::iterator it;
-for(int i=0;i<n;i++)	
+for(int i=0;i<10000;i++)	
    {
 	string t_s="";
 	
@@ -221,7 +221,7 @@ for(it = mymap.begin();it != mymap.end();it++)
    {
 	double b=double((*it).second) ;
 	
-	double ans =(b* log2(b/n));
+	double ans =(b* log2(b/10000));
     data -= ans;			
    }
 return data;
@@ -231,7 +231,7 @@ void YoubikeGa::ecga()
 {
 
 
-for(int i=0;i<n;i++)
+for(int i=0;i<tn;i++)
    {
     pop[i]=new int[ell];		
 	//
@@ -240,25 +240,25 @@ for(int i=0;i<n;i++)
 	
    }	
  
-for(int i=tn;i<2*n;i++)
+for(int i=tn;i<2*tn;i++)
    pop[i]=new int[ell];
 
 while(!should_terminate()) {
 //initial
-for(int i=0;i<n;i++)
+for(int i=0;i<tn;i++)
    {
 	youbike[i].trans=pop[i];
 	youbike[i].fitness= fitnessFunction->get_fitness(pop[i], true, false); 	
       
   }	
 // model buiding	
-vector<int> BB[ell];
-int BB_length[ell];
+vector<int> BB[48];
+int BB_length[48];
 double MDL;
 double total_mdl=0;
-bool able[ell];
-double each_mdl[ell];  
-for(int i=0;i<ell;i++)	
+bool able[48];
+double each_mdl[48];  
+for(int i=0;i<48;i++)	
    {
     BB_length[i]=1;		
 	BB[i].push_back(i);
@@ -268,7 +268,7 @@ for(int i=0;i<ell;i++)
 	each_mdl[i]=count_mdl(ttt,1); 
 	total_mdl+=each_mdl[i];
    }	
-total_mdl += ell*log2(tn);   
+total_mdl += 48*log2(tn);   
 // MDL	
 
 MDL=total_mdl;
@@ -278,11 +278,11 @@ while (1)
 double temp_mdl,tt;
 double adapt;
 int merge1,merge2;
-for(int i=0;i<ell;i++)
+for(int i=0;i<48;i++)
   {
    if(!able[i])
       continue;
-   for(int i2=i+1;i2<ell;i2++) 
+   for(int i2=i+1;i2<48;i2++) 
       {
 	  if(!able[i2])
 	     continue;
@@ -319,9 +319,10 @@ each_mdl[merge1]=adapt;
 BB_length[merge1]+=BB_length[merge2];/**/
 total_mdl =MDL;
 able[merge2]=false;
-// print building blocks each time , can comment 
-/*cout<<"building blocks update:"<<endl;
-for(int i = 0; i<ell;i++)
+// print building blocks each time , can comment
+/* 
+cout<<"building blocks up :"<<endl;
+for(int i = 0; i<48;i++)
    {    
         if(!able[i])
           continue;
@@ -337,16 +338,16 @@ for(int i = 0; i<ell;i++)
 
 //sample
 
-for(int i=tn;i<2*n;i++)
+for(int i=tn;i<2*tn;i++)
    {
     		
     //
-	for(int j=0;j<ell;j++)
+	for(int j=0;j<48;j++)
 	   {
 	   if(!able[j])		
 		  continue;
 		 int a; 
-			a=rand()%n;
+			a=rand()%10000;
 		for(int k=0;k<BB_length[j];k++)
 			pop[i][BB[j][k]]=pop[a][BB[j][k]];	
 	   }
@@ -376,8 +377,8 @@ if(best_fitness>youbike[0].fitness)
 
 void YoubikeGa::selection()
 {
-sort(youbike,youbike+n+n,compare);	
-for(int i=0;i<n;i++)
+sort(youbike,youbike+tn+tn,compare);	
+for(int i=0;i<tn;i++)
 	for(int i2=0;i2<ell;i2++)
       pop[i][i2] = youbike[i].trans[i2];
 
