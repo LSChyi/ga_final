@@ -173,6 +173,10 @@ void YoubikeGa::output_model() {
 ////////////////// ecga  not sure can work ? ////////////////////
 
 
+bool compare(bike a,bike b)
+{
+return a.fitness>b.fitness;	
+}
 
 char ref[10]={'0','1','2','3','4','5','6','7','8','9'};
 
