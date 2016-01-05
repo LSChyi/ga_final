@@ -329,8 +329,8 @@ for(int i = 0; i<48;i++)
    	for(int i2=0;i2<BB_length[i];i2++)
 	    cout<<BB[i][i2]<<' ';	
 	cout<<endl; 	
-	}
-}*/
+	}*/
+}
 
 /// print building blocks each time , can comment 
 
