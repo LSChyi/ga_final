@@ -101,8 +101,8 @@ void YoubikeGa::run() {
         int* best_c; 
         while (tournament --)
         {
-    	    sample_1=sample_f1->sample(generator_model,park);
-            sample_2=sample_f2->sample(generator_model,park);
+    	   sample_f1->sample(generator_model,park,sample_1);
+           sample_f2->sample(generator_model,park,sample_2);
     	    // 2. ask fitness function
     	    double avg_fitness_1 = fitnessFunction->get_fitness(sample_1, true, false);
     	    nfe++;
@@ -173,12 +173,12 @@ void YoubikeGa::output_model() {
 ////////////////// ecga  not sure can work ? ////////////////////
 
 
+
 bool compare(bike a,bike b)
 {
 return a.fitness>b.fitness;	
 }
-
-char ref[10]={'0','1','2','3','4','5','6','7','8','9'};
+char reff[10]={'0','1','2','3','4','5','6','7','8','9'};
 
 double count_mdl(int* model,int l)
 {
@@ -198,7 +198,7 @@ for(int i=0;i<10000;i++)
 		while(1)
 		    {
 			 int y = ta %10;
-			 a += ref[y];
+			 a += reff[y];
 			 ta /= 10 ;
 			 re ++;
 			 if(ta == 0)
@@ -242,13 +242,14 @@ for(int i=0;i<tn;i++)
  
 for(int i=tn;i<2*tn;i++)
    pop[i]=new int[ell];
-  
+
 while(!should_terminate()) {
 //initial
 for(int i=0;i<tn;i++)
    {
 	youbike[i].trans=pop[i];
-	youbike[i].fitness= fitnessFunction->get_fitness(pop[i], true, true); 	
+	youbike[i].fitness= fitnessFunction->get_fitness(pop[i], true, false); 	
+      
   }	
 // model buiding	
 vector<int> BB[48];
@@ -271,6 +272,7 @@ total_mdl += 48*log2(tn);
 // MDL	
 
 MDL=total_mdl;
+int record=0;
 while (1)
 {
 double temp_mdl,tt;
@@ -307,7 +309,7 @@ for(int i=0;i<48;i++)
 if (total_mdl ==MDL)
    break;
   
-cout<<generation<<endl;
+cout<<++record<<endl;
 // merge
 
 cout<<merge1<<' '<<merge2<<endl;
@@ -318,7 +320,9 @@ BB_length[merge1]+=BB_length[merge2];/**/
 total_mdl =MDL;
 able[merge2]=false;
 for(int i = 0; i<48;i++)
-   {
+   {    
+        if(!able[i])
+          continue;
    	for(int i2=0;i2<BB_length[i];i2++)
 	    cout<<BB[i][i2]<<' ';	
 	cout<<endl; 	
@@ -343,11 +347,20 @@ for(int i=tn;i<2*tn;i++)
 	
 	
 	youbike[i].trans=pop[i];
-	youbike[i].fitness= fitnessFunction->get_fitness(pop[i], true, true); 
+	youbike[i].fitness= fitnessFunction->get_fitness(pop[i], true, false); 
+        
    }	
 // selection
 selection();  /* */
-
+cout<<youbike[0].fitness<<endl;
+for(int i= 0 ;i<ell;i++)
+   cout<<youbike[0].trans[i]<<' ';
+cout<<endl;
+if(best_fitness>youbike[0].fitness)
+  {
+   best_fitness=youbike[0].fitness;
+   best_chromosome->init(youbike[0].trans);
+  }
 	generation+=1;
 }	
 }
@@ -360,7 +373,3 @@ for(int i=0;i<tn;i++)
       pop[i][i2] = youbike[i].trans[i2];
 
 }
-
-
-
-
